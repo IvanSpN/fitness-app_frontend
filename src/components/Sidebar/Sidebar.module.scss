@@ -1,0 +1,21 @@
+.sidebar{
+    width: 300px;
+    color: red;
+    padding: 40px;
+    background-color: black;
+    border: 1px solid red;
+    border-radius: 10px;
+
+height: 89vh;
+position: fixed;
+
+
+    ul {
+        display: flex;
+        flex-direction: column;
+        row-gap: 40px;
+        li{
+            cursor: pointer;
+        }
+    }
+}
