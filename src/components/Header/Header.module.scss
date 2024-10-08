@@ -1,6 +1,12 @@
 .header{
     color: red;
-    max-width: fit-content;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    // max-width: fit-content;
     margin: 0 auto;
     padding: 40px;
+    border: 1px solid red;
+    border-radius: 10px;
+    width: 100%;
 }
