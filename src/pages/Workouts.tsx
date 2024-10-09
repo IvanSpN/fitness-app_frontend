@@ -1,5 +1,11 @@
+import '../styles/index.scss'
+
 export const Workouts = () => {
-  return (
-    <div style={{color: 'red'}}>Workouts</div>
-  )
+    return (
+        <div className="workouts">
+            <div className='www'>
+                Workouts
+            </div>
+        </div>
+    )
 }

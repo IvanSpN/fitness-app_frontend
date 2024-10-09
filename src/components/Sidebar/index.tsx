@@ -1,17 +1,36 @@
-import React from 'react'
-
 import styles from './Sidebar.module.scss'
-import { Link } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 
 export const Sidebar = () => {
-  return (
-    <nav className={styles.sidebar}>
-        <ul>
-            <Link to='/constructor'>Конструктор</Link>
-            <Link to='/workouts'>Текущие тренировки</Link>
-            <Link to='/statistics'>Статистика</Link>
-        </ul>
+    return (
+        <nav className={styles.sidebar}>
+            <ul>
+                <li>
+                    <NavLink
+                        to='/constructor'
+                        className={({ isActive }) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}
+                    >
+                        Конструктор
+                    </NavLink>
+                </li>
+                <li>
+                    <NavLink
+                        to='/workouts'
+                        className={({ isActive }) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}
+                    >
+                        Текущие тренировки
+                    </NavLink>
+                </li>
+                <li>
+                    <NavLink
+                        to='/statistics'
+                        className={({ isActive }) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}
+                    >
+                        Статистика
+                    </NavLink>
+                </li>
+            </ul>
 
-    </nav>
-  )
+        </nav>
+    )
 }
