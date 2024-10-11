@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { ExercisesList } from '../components/ExercisesList'
 import '../styles/index.scss'
+import { ConfiguredWorkoutList } from '../components/ConfiguredWorkoutList/ConfiguredWorkoutList'
 
 export const Constructor = () => {
 const [scnf, setScnf] = useState<[]>([])
@@ -15,7 +16,7 @@ const [scnf, setScnf] = useState<[]>([])
                 </div>
                 <div className='right-block'>
                     <h2>Собраная тренировка</h2>
-                    {scnf}
+                    <ConfiguredWorkoutList/>
                 </div>
 
             </div>
