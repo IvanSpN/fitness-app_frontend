@@ -1,0 +1,15 @@
+.wrapper {
+}
+
+.exerciseDetails {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.name,
+.sets,
+.reps,
+.weight {
+    font-size: 14px;
+    font-weight: bold;
+}

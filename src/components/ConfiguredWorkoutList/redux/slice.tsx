@@ -1,15 +1,33 @@
-
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 
-import exercisesList, { exercisesListItem } from '../../../data/DB'
-
+export interface IExercise {
+    id: number
+    name: string
+    sets: number
+    reps: number
+    weight: number
+}
 interface IConfiguredWorkoutList {
-    dataConfiguredWorkoutList: exercisesListItem  [],
+    formList: IExercise[]
+    workout: INewWorkout
     isLoading: boolean,
 }
 
- const configuredWorkoutList: IConfiguredWorkoutList = {
-    dataConfiguredWorkoutList: [],
+export interface INewWorkout {
+    id: any,
+    type: any,
+    date: string | null
+    exercises: IExercise[],
+}
+
+const configuredWorkoutList: IConfiguredWorkoutList = {
+    formList: [],
+    workout: {
+        type: null,
+        id: null,
+        date: null,
+        exercises: [],
+    },
     isLoading: false,
 }
 
@@ -17,19 +35,33 @@ export const configuredWorkoutListSlice = createSlice({
     name: 'configuredWorkoutList',
     initialState: configuredWorkoutList,
     reducers: {
-        setAddExerciseConfigureList: (state, action: PayloadAction<exercisesListItem>)=>{
-                state.dataConfiguredWorkoutList.push(action.payload)
+
+        setWorkOutForm: (state, { payload }: PayloadAction<{ id: number, key: keyof IExercise, value: number }>) => {
+            const isExsist = state.formList.find((exc) => exc.id === payload.id)
+            if (isExsist) state.formList = state.formList.map((exc) => exc.id === payload.id ? { ...exc, [payload.key]: payload.value } : exc)
         },
-        setDeleteExerciseConfiguredList: (state, action: PayloadAction<number>)=>{
-                state.dataConfiguredWorkoutList = state.dataConfiguredWorkoutList.filter((exercise, index)=> index !== action.payload)
+        submitForm: (state) => {
+            state.formList = []
+        },
+        addNewExerciseForm: (state, { payload }: PayloadAction<IExercise>) => {
+            state.formList.push(payload)
+        },
+        deleteNewExerciseForm: (state, { payload }: PayloadAction<number>) => {
+            state.formList = state.formList.filter((workout) => workout.id !== payload)
+        },
+        deleteAllFormList: (state) => {
+            state.formList = []
         },
 
     },
 })
 
 export const {
-    setAddExerciseConfigureList,
-    setDeleteExerciseConfiguredList
+    setWorkOutForm,
+    submitForm,
+    addNewExerciseForm,
+    deleteNewExerciseForm,
+    deleteAllFormList,
 
 } = configuredWorkoutListSlice.actions
 

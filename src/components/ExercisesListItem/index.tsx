@@ -4,8 +4,8 @@ import { MyButton } from '../UI/button/MyButton'
 
 import styles from './ExercisesListItem.module.scss'
 import { useAppDispatch } from '../../shared/Redux/store'
-import { setAddExerciseConfigureList } from '../ConfiguredWorkoutList/redux/slice'
-import exercisesList, { exercisesListItem } from '../../data/DB'
+import { exercisesListItem } from '../../data/DB'
+import { addNewExerciseForm } from '../ConfiguredWorkoutList/redux/slice'
 
 
 interface ExercisesListItemProps {
@@ -18,16 +18,20 @@ export const ExercisesListItem: React.FC<ExercisesListItemProps> = ({ name, exer
 
   const dispatch = useAppDispatch()
 
-
-
-  const handleClick = (exis: exercisesListItem) =>{
-    dispatch(setAddExerciseConfigureList(exis));
+  const handleClick = (exis: exercisesListItem) => {
+    dispatch(addNewExerciseForm({
+      id: exis.id,
+      name: exis.name,
+      sets: 0,
+      reps: 0,
+      weight: 0
+    }));
 
   }
   return (
     <div className={styles.exercise}>
       <h3>{name}</h3>
-      <MyButton onClick={()=>handleClick(exercise)}>Добавить</MyButton>
+      <MyButton onClick={() => handleClick(exercise)}>Добавить</MyButton>
     </div>
   )
 }
