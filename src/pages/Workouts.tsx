@@ -1,8 +1,8 @@
 import { useAppSelector } from '../shared/Redux/hooks'
-import { СonfiguredWorkout } from '../components/СonfiguredWorkout/index'
+import { СonfiguredWorkout } from '../features/create-workout/index'
 
 import '../styles/index.scss'
-import { WorkoutsList } from '../components/WorkoutsList'
+import { WorkoutsList } from '../features/WorkoutsList'
 
 export const Workouts = () => {
 
@@ -11,7 +11,7 @@ export const Workouts = () => {
 
     return (
         <div className="workouts">
-<WorkoutsList/>
-       </div>
+            <WorkoutsList />
+        </div>
     )
 }

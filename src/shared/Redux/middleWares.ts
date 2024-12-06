@@ -1,4 +1,4 @@
-import { workoutsListSlice } from './../../components/WorkoutsList/redux/slice';
+import { exercisesListSlice } from './../../features/WorkoutsList/redux/slice'
 import { Middleware } from '@reduxjs/toolkit'
 import { loadWorkoutsFromLocalStorage, syncWorkoutsWithLocalStorage } from './middlewares/workoutsMiddleware'
 
@@ -12,26 +12,26 @@ export const localStorageMiddleware: Middleware =
     }
 
 export const loadFromLocalStorage: any = () => {
-        // Загрузка данных
-        // const accessTokenData = localStorage.getItem('access_token')
-        // const refreshTokenData = localStorage.getItem('refresh_token')
-        const workoutsData = loadWorkoutsFromLocalStorage()
+    // Загрузка данных
+    // const accessTokenData = localStorage.getItem('access_token')
+    // const refreshTokenData = localStorage.getItem('refresh_token')
+    const workoutsData = loadWorkoutsFromLocalStorage()
 
-        // Формирование объекта начального состояния
-        const state: any = {}
+    // Формирование объекта начального состояния
+    const state: any = {}
 
-        // if (accessTokenData !== null) {
-        //     state.auth = {
-        //         ...globalInitialStates.auth,
-        //         access_token: accessTokenData,
-        //         refresh_token: refreshTokenData,
-        //     }
-        // }
+    // if (accessTokenData !== null) {
+    //     state.auth = {
+    //         ...globalInitialStates.auth,
+    //         access_token: accessTokenData,
+    //         refresh_token: refreshTokenData,
+    //     }
+    // }
 
-        if (workoutsData.length > 0) {
-            state.workoutsList = { ...workoutsListSlice, workouts: workoutsData }
-        }
+    if (workoutsData.length > 0) {
+        state.workoutsList = { ...exercisesListSlice, workouts: workoutsData }
+    }
 
-        // Возврат сформированного начального состояния
-        return state
+    // Возврат сформированного начального состояния
+    return state
 }
