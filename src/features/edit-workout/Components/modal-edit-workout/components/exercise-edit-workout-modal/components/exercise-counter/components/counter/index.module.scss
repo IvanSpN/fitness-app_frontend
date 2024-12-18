@@ -1,0 +1,29 @@
+.wrapper{
+    // padding: 10px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+.wrapperCounter{
+    display: flex;
+    gap: 80px;
+}
+
+.counter{
+    width: fit-content;
+    display: flex;
+    padding: 5px;
+    gap: 7px;
+    border: 1px dotted black;
+    border-radius: 10px;
+}
+
+.btnCounter{
+    width: 20px;
+    text-align: center;
+    border-radius: 10px;
+}
+
+.wrapperCounter{
+    display: flex;
+}
