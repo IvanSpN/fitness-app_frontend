@@ -1,13 +1,16 @@
-import { localStorageMiddleware, loadFromLocalStorage } from './middleWares'
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
 import { useDispatch } from 'react-redux'
-import workoutsList from '../../features/WorkoutsList/redux/slice'
+
+import { localStorageMiddleware, loadFromLocalStorage } from './middleWares'
 import createWorkout from '../../features/create-workout/redux/slice'
+import displayListWorkout from '../../features/display-list-workout/redux/slice'
+import editWorkout from '../../features/edit-workout/redux/slice'
 
 export const store = configureStore({
     reducer: combineReducers({
-        workoutsList,
-        createWorkout
+        createWorkout,
+        displayListWorkout,
+        editWorkout,
     }),
     preloadedState: loadFromLocalStorage(),
     middleware: getDefaultMiddleware =>

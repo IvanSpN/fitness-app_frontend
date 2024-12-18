@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { useAppSelector } from '../../../../shared/Redux/hooks'
 import { useAppDispatch } from '../../../../shared/Redux/store'
 
@@ -8,7 +6,7 @@ import { DateSetup } from '../../../../shared/Components/data-setup'
 
 import { deleteAllFormList, submitForm } from '../../redux/slice'
 import { deleteDate, setDate } from '../../redux/slice'
-import { addWorkout } from '../../redux/slice'
+import { addWorkout } from '../../../display-list-workout/redux/slice'
 
 import { CreateItem } from './components/create-item'
 
@@ -40,23 +38,18 @@ export const CreateList = () => {
     const handleDateChange = (date: Date | null) => {
         if (date) {
             dispatch(setDate(date.toISOString()));
-          } else {
+        } else {
             dispatch(setDate(null));
-          }
-      };
-
-      console.log(dateCreateWorkout);
-
-
+        }
+    };
 
     return (
         <div className={styles.wrapper}>
             <div className={styles.top}>
                 <h2>Собираем тренировку</h2>
                 <h3>Тренировка на дату:</h3>
-                {/* <DateSetup value={dateCreateWorkout} onChange={handleDateChange} /> */}
-                <DateSetup value={dateCreateWorkout} onChange={handleDateChange}/>
-                {formList.length > 0 && <MyButton className={styles.btn_dellAll} onClick={handlerDeleteAll}>Удалить всё</MyButton>
+                <DateSetup value={dateCreateWorkout} onChange={handleDateChange} />
+                {(formList.length > 0 || dateCreateWorkout) && <MyButton className={styles.btn_dellAll} onClick={handlerDeleteAll}>Удалить всё</MyButton>
                 }
             </div>
             <div className={styles.create_exercise_wrapper}>
@@ -64,7 +57,7 @@ export const CreateList = () => {
                     <CreateItem exercise={exercise} key={exercise.id} index={index} />
                 )}
             </div>
-            {formList.length > 0 && <MyButton className={styles.button_ok} onClick={onCreate}>Готово!</MyButton>
+            {formList.length > 0 && <MyButton className={styles.button_ok} onClick={onCreate}>Добавить тренировку</MyButton>
             }
         </div>
     )

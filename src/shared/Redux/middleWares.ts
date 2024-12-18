@@ -1,4 +1,4 @@
-import { exercisesListSlice } from './../../features/WorkoutsList/redux/slice'
+import { displayListWorkoutSlice } from '../../features/display-list-workout/redux/slice'
 import { Middleware } from '@reduxjs/toolkit'
 import { loadWorkoutsFromLocalStorage, syncWorkoutsWithLocalStorage } from './middlewares/workoutsMiddleware'
 
@@ -29,7 +29,7 @@ export const loadFromLocalStorage: any = () => {
     // }
 
     if (workoutsData.length > 0) {
-        state.workoutsList = { ...exercisesListSlice, workouts: workoutsData }
+        state.displayListWorkout = { ...displayListWorkoutSlice, workouts: workoutsData }
     }
 
     // Возврат сформированного начального состояния

@@ -19,12 +19,13 @@ export const ExercisesList = () => {
   }, [])
 
   const { dataExercisesList } = useAppSelector(state => state.createWorkout)
+  console.log('data', dataExercisesList);
 
   return (
     <div className={styles.wrapper}>
       <h2>Список упражнений</h2>
       {dataExercisesList.map((exercise) =>
-        <ExercisesItem name={exercise.name} key={exercise.id} id={exercise.id} exercise={exercise} />
+        <ExercisesItem key={exercise.id} exercise={exercise} />
       )}
     </div>
   )

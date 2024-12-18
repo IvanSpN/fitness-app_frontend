@@ -1,7 +1,7 @@
 import { RootState } from '../store'
 
 export const syncWorkoutsWithLocalStorage = (getState: () => RootState) => {
-    const workoutsState = getState().workoutsList.workouts
+    const workoutsState = getState().displayListWorkout.workouts
 
     localStorage.setItem('workouts', JSON.stringify(workoutsState))
 

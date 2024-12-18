@@ -18,7 +18,7 @@ export const Sidebar = () => {
                         to='/workouts'
                         className={({ isActive }) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}
                     >
-                        Текущие тренировки
+                        Тренировки
                     </NavLink>
                 </li>
                 <li>
