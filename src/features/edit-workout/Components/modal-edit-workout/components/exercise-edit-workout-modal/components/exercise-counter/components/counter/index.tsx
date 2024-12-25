@@ -5,7 +5,7 @@ import { MyButton } from '../../../../../../../../../UI/button/MyButton'
 import styles from './index.module.scss'
 
 interface CounterProps {
-    value: number,
+    value: number
     onIncrement: () => void
     onDecrement: () => void
 }

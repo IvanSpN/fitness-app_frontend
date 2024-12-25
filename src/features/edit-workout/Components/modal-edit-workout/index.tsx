@@ -1,19 +1,32 @@
+import { useRef, useState } from 'react'
+import Select from 'rc-select';
+
+import { IoCloseOutline } from "react-icons/io5";
+
 import { MyButton } from '../../../UI/button/MyButton'
+import { MyInput } from '../../../UI/input/MyInput'
 import { ExerciseEditWorkoutModal } from './components/exercise-edit-workout-modal'
 
-import { toggleModal, setDelWorkout, setWorkoutDate } from '../../redux/slice'
+import { toggleModal, setDelWorkout, setWorkoutDate, setStepCounter, setClearStepCounter, setChangeIntensity, setChangeType } from '../../redux/slice'
 import { addWorkout, updateWorkout } from '../../../display-list-workout/redux/slice'
 import { useAppSelector } from '../../../../shared/Redux/hooks'
 import { useAppDispatch } from '../../../../shared/Redux/store'
 
 import { DateSetup } from '../../../../shared/Components/data-setup'
+import { optionsIntensity, optionsType } from '../../../create-workout/Components/create-list';
 
 import styles from './index.module.scss'
 
 export const EditWorkoutModal = () => {
+
+    const [isInputFocused, setIsInputFocused] = useState(false);
+
+    const stepCounterRef = useRef<HTMLInputElement>(null);
+
+
     const dispatch = useAppDispatch()
 
-    const { workout, mode } = useAppSelector(state => state.editWorkout)
+    const { workout, mode, stepCouter } = useAppSelector(state => state.editWorkout)
 
     if (!workout) {
         return <p>Тренировка не найдена.</p>;
@@ -51,11 +64,55 @@ export const EditWorkoutModal = () => {
         dispatch(toggleModal({ modal: 'addExcersiseOpen', value: true }))
     }
 
+    const handlerChangeInput = () => {
+        if (stepCounterRef.current) {
+            const inputValue = stepCounterRef.current.value;
+            const numberValue = inputValue.replace(/[^\d.-]/g, '');
+
+            console.log('Filtered Input value:', numberValue);
+            dispatch(setStepCounter(numberValue));
+        }
+    };
+
+    const handlerClearInput = () => {
+        dispatch(setClearStepCounter())
+    }
+
+    const handleChangeIntensity = (value: string) => {
+        dispatch(setChangeIntensity(value))
+    }
+    const handleChangeType = (value: string) => {
+        dispatch(setChangeType(value))
+    }
+
     return (
         <div className={styles.wrapper}>
-            <div>
+            <div className={styles.topBlock}>
                 <DateSetup value={workout.date} onChange={handleDateChange} />
                 <MyButton className={styles.btnAddExercise} onClick={openAddWorkoutModal}>Добавить упражнения</MyButton>
+                <MyInput ref={stepCounterRef} type='text' value={stepCouter} onChange={handlerChangeInput} label='Установить шаг -/+'
+                    onFocus={() => setIsInputFocused(true)}
+                    onBlur={() => setIsInputFocused(false)}
+                />
+                <IoCloseOutline className={`${styles.clearIcon} ${isInputFocused && +stepCouter > 0 ? styles.clearIconFocused : ''}`} onClick={handlerClearInput} />
+            </div>
+            <div className={styles.intensityInfo}>
+                <label>Интенсивность тренировки: </label>
+                <Select
+                    value={workout.intensity}
+                    onChange={handleChangeIntensity}
+                    showSearch
+                    getPopupContainer={triggerNode => triggerNode.parentNode}
+                    options={optionsIntensity.map(option => ({ value: option, label: option }))}
+                />
+                <label>Тип тренировки: </label>
+                <Select
+                    value={workout.type}
+                    onChange={handleChangeType}
+                    showSearch
+                    getPopupContainer={triggerNode => triggerNode.parentNode}
+                    options={optionsType.map(option => ({ value: option, label: option }))}
+                />
             </div>
             <div>
                 <table>

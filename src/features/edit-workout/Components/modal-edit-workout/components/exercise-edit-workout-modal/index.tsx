@@ -1,4 +1,4 @@
-import { IExercise } from '../../../../../display-list-workout/redux/slice'
+import { IExercise } from '../../../../../create-workout/redux/slice'
 import { MyButton } from '../../../../../UI/button/MyButton'
 import { ExerciseCounter } from './components/exercise-counter'
 

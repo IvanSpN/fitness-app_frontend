@@ -1,15 +1,6 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 import { INewWorkout, IExercise } from '../../create-workout/redux/slice'
 
-export interface IEditWorkoutInitialState {
-    dataExerciseListAdd: IAddExersice[]
-    workout: INewWorkout | null
-    mode: 'copy' | 'edit'
-    modal: {
-        mainModalOpen: boolean
-        addExcersiseOpen: boolean
-    }
-}
 export interface IAddExersice {
     id: number
     name: string
@@ -20,6 +11,16 @@ export interface IAddExersice {
     checked: boolean
 }
 
+export interface IEditWorkoutInitialState {
+    dataExerciseListAdd: IAddExersice[]
+    workout: INewWorkout | null
+    mode: 'copy' | 'edit'
+    modal: {
+        mainModalOpen: boolean
+        addExcersiseOpen: boolean
+    }
+    stepCouter: string
+}
 const editWorkoutInitialState: IEditWorkoutInitialState = {
     dataExerciseListAdd: [],
     workout: null,
@@ -28,6 +29,7 @@ const editWorkoutInitialState: IEditWorkoutInitialState = {
         mainModalOpen: false,
         addExcersiseOpen: false,
     },
+    stepCouter: '1',
 }
 
 export const editWorkoutSlice = createSlice({
@@ -50,22 +52,26 @@ export const editWorkoutSlice = createSlice({
         },
         setIncrementField: (
             state,
-            { payload }: PayloadAction<{ exerciseId: number; field: 'sets' | 'reps' | 'weight' }>
+            { payload }: PayloadAction<{ exerciseId: number; field: 'sets' | 'reps' | 'weight', step: string}>
         ) => {
-            const { exerciseId, field } = payload
+            const { exerciseId, field, step } = payload
             const foundExercise = state.workout?.exercises.find(exercise => exercise.id === exerciseId)
             if (foundExercise) {
-                foundExercise[field] += 1
+                const stepValue = Number(step);
+                foundExercise[field] += stepValue;
             }
         },
         setDecrementField: (
             state,
-            { payload }: PayloadAction<{ exerciseId: number; field: 'sets' | 'reps' | 'weight' }>
+            { payload }: PayloadAction<{ exerciseId: number; field: 'sets' | 'reps' | 'weight', step: string}>
         ) => {
-            const { exerciseId, field } = payload
+            const { exerciseId, field, step } = payload
             const foundExercise = state.workout?.exercises.find(exercise => exercise.id === exerciseId)
             if (foundExercise) {
-                foundExercise[field] -= 1
+                if (typeof foundExercise[field] === 'number') {
+                    const stepValue = Number(step);
+                    foundExercise[field] = Math.max(0, foundExercise[field] - stepValue);
+                }
             }
         },
         setWorkoutDate: (state, { payload }: PayloadAction<string | null>) => {
@@ -76,6 +82,22 @@ export const editWorkoutSlice = createSlice({
         setDelWorkout: (state, { payload }: PayloadAction<IExercise['id']>) => {
             if (state.workout) {
                 state.workout.exercises = state.workout.exercises.filter(exercise => exercise.id !== payload)
+            }
+        },
+        setStepCounter: (state, { payload }: PayloadAction<string>) => {
+            state.stepCouter = payload
+        },
+        setClearStepCounter: (state) => {
+            state.stepCouter = ' '
+        },
+        setChangeIntensity: (state, {payload}: PayloadAction<INewWorkout['intensity']>) => {
+            if (state.workout) {
+                state.workout.intensity = payload;
+            }
+        },
+        setChangeType: (state, {payload}: PayloadAction<INewWorkout['type']>) => {
+            if (state.workout) {
+                state.workout.type = payload;
             }
         },
         toggleModal: (
@@ -104,6 +126,10 @@ export const {
     setModalMode,
     setWorkoutDate,
     setDelWorkout,
+    setStepCounter,
+    setClearStepCounter,
+    setChangeIntensity,
+    setChangeType,
 } = editWorkoutSlice.actions
 
 export default editWorkoutSlice.reducer

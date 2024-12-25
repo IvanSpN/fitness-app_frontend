@@ -5,6 +5,7 @@ export interface INewWorkout {
     id: any
     type: any
     date: string | null
+    intensity: null | string
     exercises: IExercise[]
 }
 

@@ -3,7 +3,7 @@ import React from 'react'
 import { useAppSelector } from '../../shared/Redux/hooks'
 import { useAppDispatch } from '../../shared/Redux/store'
 
-import MyModal from '../UI/modal/MyModal'
+import {MyModal} from '../UI/modal/MyModal'
 import { EditWorkoutModal } from './Components/modal-edit-workout'
 
 import { AddExerciseModal } from './Components/modal-add-exercise'

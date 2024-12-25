@@ -2,6 +2,11 @@
 
 }
 
+.topBlock{
+    display: flex;
+    margin-bottom: 30px;
+}
+
 .info{
     // display: flex;
     gap: 10px;
@@ -13,4 +18,20 @@
 }
 .btnAddExercise{
     background-color: brown;
+}
+
+.clearIcon{
+    position: absolute;
+    top: 22px;
+    right: 22px;
+    cursor: pointer;
+
+}
+.clearIconFocused{
+    scale: 2;
+}
+
+.intensityInfo{
+    margin-bottom: 20px;
+
 }

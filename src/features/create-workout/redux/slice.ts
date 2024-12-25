@@ -11,18 +11,19 @@ export interface IExercise {
 }
 
 export interface INewWorkout {
-    id: any,
-    type: any,
+    id: any
+    type: string | null
     date: string | null
-    exercises: IExercise[],
+    intensity: null | string
+    exercises: IExercise[]
 }
 
 interface ICreateWorkoutInitialState {
-    dataExercisesList: exercisesListItem[],
-    configuredWorkoutList: [],
-    formList: IExercise[],
-    workout: INewWorkout,
-    dateCreateWorkout: string | null,
+    dataExercisesList: exercisesListItem[]
+    configuredWorkoutList: []
+    formList: IExercise[]
+    workout: INewWorkout
+    dateCreateWorkout: string | null
 }
 
 const createWorkoutInitialState: ICreateWorkoutInitialState = {
@@ -30,9 +31,10 @@ const createWorkoutInitialState: ICreateWorkoutInitialState = {
     configuredWorkoutList: [],
     formList: [],
     workout: {
-        type: null,
         id: null,
+        type: null,
         date: null,
+        intensity: 'легкая',
         exercises: [],
     },
     dateCreateWorkout: null,
@@ -45,34 +47,51 @@ export const createWorkoutSlice = createSlice({
         setExercisesList: (state, action: PayloadAction<exercisesListItem[]>) => {
             state.dataExercisesList = action.payload
         },
-        setWorkOutForm: (state, { payload }: PayloadAction<{ id: number, key: keyof IExercise, value: number }>) => {
-            const isExsist = state.formList.find((exc) => exc.id === payload.id)
-            if (isExsist) state.formList = state.formList.map((exc) => exc.id === payload.id ? { ...exc, [payload.key]: payload.value } : exc)
+        setWorkOutForm: (state, { payload }: PayloadAction<{ id: number; key: keyof IExercise; value: number }>) => {
+            const isExsist = state.formList.find(exc => exc.id === payload.id)
+            if (isExsist)
+                state.formList = state.formList.map(exc =>
+                    exc.id === payload.id ? { ...exc, [payload.key]: payload.value } : exc
+                )
         },
-        submitForm: (state) => {
+        setIntensity: (state, { payload }: PayloadAction<INewWorkout['intensity']>) => {
+            state.workout.intensity = payload
+        },
+        setType: (state, { payload }: PayloadAction<INewWorkout['type']>) => {
+            state.workout.type = payload
+        },
+        submitForm: state => {
             state.formList = []
         },
         addNewExerciseForm: (state, { payload }: PayloadAction<IExercise>) => {
             state.formList.push(payload)
         },
         deleteNewExerciseForm: (state, { payload }: PayloadAction<number>) => {
-            state.formList = state.formList.filter((workout) => workout.id !== payload)
+            state.formList = state.formList.filter(workout => workout.id !== payload)
         },
-        deleteAllFormList: (state) => {
+        deleteAllFormList: state => {
             state.formList = []
         },
-        setDate: ((state, { payload }: PayloadAction<ICreateWorkoutInitialState['dateCreateWorkout']>) => {
+        setDate: (state, { payload }: PayloadAction<ICreateWorkoutInitialState['dateCreateWorkout']>) => {
             state.dateCreateWorkout = payload
-        }),
-        deleteDate: ((state) => {
+        },
+        deleteDate: state => {
             state.dateCreateWorkout = null
-        }),
-
+        },
     },
 })
 
 export const {
-    setExercisesList, setWorkOutForm, submitForm, addNewExerciseForm, deleteNewExerciseForm, deleteAllFormList, setDate, deleteDate,
+    setExercisesList,
+    setWorkOutForm,
+    submitForm,
+    addNewExerciseForm,
+    deleteNewExerciseForm,
+    deleteAllFormList,
+    setDate,
+    deleteDate,
+    setIntensity,
+    setType,
 } = createWorkoutSlice.actions
 
 export default createWorkoutSlice.reducer

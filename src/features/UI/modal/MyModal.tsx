@@ -1,4 +1,4 @@
-import React, { Children, ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 
 import styles from './MyModal.module.scss'
 
@@ -21,4 +21,4 @@ export const MyModal: React.FC<ModalProps> = ({ onClose, isOpen, children }) => 
     );
 };
 
-export default MyModal;
+

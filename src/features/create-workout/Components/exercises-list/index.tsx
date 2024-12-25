@@ -19,7 +19,6 @@ export const ExercisesList = () => {
   }, [])
 
   const { dataExercisesList } = useAppSelector(state => state.createWorkout)
-  console.log('data', dataExercisesList);
 
   return (
     <div className={styles.wrapper}>

@@ -14,8 +14,8 @@ const exercisesList: exercisesListItem[] = [
         id: 1,
         name: 'Отжимания',
         config: {
-            sets: 0,
-            reps: 0,
+            sets: 1,
+            reps: 1,
             weight: 0,
             extraWeight: 0,
         },
@@ -25,8 +25,8 @@ const exercisesList: exercisesListItem[] = [
         id: 2,
         name: 'Приседания',
         config: {
-            sets: 0,
-            reps: 0,
+            sets: 1,
+            reps: 1,
             weight: 0,
             extraWeight: 0,
         },
@@ -36,8 +36,8 @@ const exercisesList: exercisesListItem[] = [
         id: 3,
         name: 'Становая тяга',
         config: {
-            sets: 0,
-            reps: 0,
+            sets: 1,
+            reps: 1,
             weight: 0,
             extraWeight: 0,
         },
@@ -47,10 +47,10 @@ const exercisesList: exercisesListItem[] = [
         id: 4,
         name: 'Жим лежа',
         config: {
-            sets: 0,
+            sets: 1,
+            reps: 1,
             weight: 0,
             extraWeight: 0,
-            reps: 0,
         },
     },
 ]

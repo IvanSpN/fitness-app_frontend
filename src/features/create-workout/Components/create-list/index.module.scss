@@ -4,6 +4,28 @@
     margin: 10px;
 }
 
-.button_ok{
+.button_ok {
     background-color: green;
+}
+
+.topHeader {
+    display: flex;
+    align-items: center;
+    gap: 50px;
+}
+
+.todayDate {
+    border: 1px solid;
+    padding: 10px;
+}
+
+.intensityBlock{
+    border: 1px solid black;
+    width: fit-content;
+    margin-top: 20px;
+}
+
+.selectBlock{
+    display: flex;
+    gap: 50px;
 }

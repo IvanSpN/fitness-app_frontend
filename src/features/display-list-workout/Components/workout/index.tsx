@@ -10,12 +10,14 @@ import styles from './index.module.scss'
 import { Exercise } from './components/exercise';
 
 interface WorkoutProps {
-    date: string | null,
-    id: number,
-    exercises: IExercise[],
+    date: string | null
+    id: number
+    intensity: null | string
+    type: null | string
+    exercises: IExercise[]
 }
 
-export const Workout: React.FC<WorkoutProps> = ({ date, id, exercises }) => {
+export const Workout: React.FC<WorkoutProps> = ({ date, id, exercises, intensity, type }) => {
     const dispatch = useAppDispatch()
 
     const { workouts } = useAppSelector(state => state.displayListWorkout)
@@ -48,7 +50,13 @@ export const Workout: React.FC<WorkoutProps> = ({ date, id, exercises }) => {
     }
     return (
         <div className={styles.wrapper}>
-            <h2>{id}</h2>
+            <div className={styles.topBlock}>
+                <h2>{id}</h2>
+                <div className={styles.infoBlock}>
+                    <p className={styles.intensityInfo}>Интенсивновсть: {intensity}</p>
+                    {type && <p className={styles.intensityInfo}>Тип: {type}</p>}
+                </div>
+            </div>
             <h3>{date ? formatDate(date) : 'Нет даты'}</h3>
             <div>
                 {exercises.map((exercise) => <Exercise key={exercise.id}
