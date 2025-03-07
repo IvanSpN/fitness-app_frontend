@@ -1,35 +1,54 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
 import { MyButton } from '../../../../../UI/button/MyButton'
 
 import { useAppDispatch } from '../../../../../../shared/Redux/store'
-import { exercisesListItem } from '../../../../../../data/DB'
-import { addNewExerciseForm } from '../../../../redux/slice'
+import { addExerciseToWorkout, setSelectedExerciseUuid, toggleModal } from '../../../../redux/slice'
+
+import { IExercisesListItemFromAPI } from '../../../../redux/types'
 
 import styles from './index.module.scss'
-
+import { removeExerciseToBaseAPI } from '../../../../redux/thunks'
 interface ExercisesItemProps {
-  exercise: exercisesListItem
+  exercise: IExercisesListItemFromAPI
 }
 
 export const ExercisesItem: React.FC<ExercisesItemProps> = ({ exercise }) => {
 
   const dispatch = useAppDispatch()
 
-  const handleClick = () => {
-    dispatch(addNewExerciseForm({
-      id: exercise.id,
+  const handleAddExerciseToWorkout = () => {
+    dispatch(addExerciseToWorkout({
+      exercise_uuid: exercise.uuid,
       name: exercise.name,
-      sets: exercise.config.sets,
-      reps: exercise.config.reps,
-      weight: exercise.config.weight,
+      reps: 0,
+      sets: 0,
+      weight: 0,
+      isWeight: exercise.isWeight
     }));
+  }
+
+  const handleDelExerciseFromBase = async () => {
+    try {
+      const deletedExercise = await dispatch(removeExerciseToBaseAPI(exercise.uuid)).unwrap();
+      console.log('Удалено упражнение:', deletedExercise);
+    } catch (error) {
+      console.error('Ошибка при удалении:', error);
+    }
 
   }
+
+  const handleEditExerciseToBase = () => {
+    dispatch(setSelectedExerciseUuid(exercise.uuid))
+    dispatch(toggleModal({ modal: 'editExerciseToBase', value: true }))
+  }
+
   return (
     <div className={styles.exercise}>
       <h3>{exercise.name}</h3>
-      <MyButton onClick={() => handleClick()}>Добавить упражнение</MyButton>
+      <MyButton onClick={() => handleAddExerciseToWorkout()}>Добавить упражнение в тренировку</MyButton>
+      <MyButton onClick={() => handleDelExerciseFromBase()}>Удалить упражнение из базы</MyButton>
+      <MyButton onClick={() => handleEditExerciseToBase()}>Редактировать упражнение</MyButton>
     </div>
   )
 }

@@ -1,0 +1,26 @@
+.wrapper{
+    border: 1px solid red;
+}
+.wrapper {
+    border: 1px solid red;
+    padding: 10px;
+}
+
+.workout{
+    border: 2px solid brown;
+    width: fit-content;
+    margin-top: 10px;
+}
+
+.intensity {
+    border: 1px solid green;
+    margin: 5px;
+}
+
+.exercises{
+    display: flex;
+    gap: 20px;
+    padding: 10px;
+    border: 1px solid red;
+    margin: 5px;
+}

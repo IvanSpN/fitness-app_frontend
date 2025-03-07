@@ -1,19 +1,20 @@
 import React, { ChangeEvent, FocusEventHandler, forwardRef } from 'react';
 import styles from './MyInput.module.scss';
 
+
+export type TInputValue = string | number | boolean;
 interface MyInputProps {
   label?: string;
   placeholder?: string;
   type: 'text' | 'number' | 'checkbox';
   className?: string;
-  onChange: (value: string | number | boolean) => void;
-  value: string | number | boolean;
+  onChange: (value: string | number | boolean ) => void;
+  value?: TInputValue
   id?: string;
   onFocus?: FocusEventHandler<HTMLInputElement>;
   onBlur?: FocusEventHandler<HTMLInputElement>;
 }
 
-// Оборачиваем компонент в forwardRef
 export const MyInput = forwardRef<HTMLInputElement, MyInputProps>(
   ({ label, placeholder, type, className = '', onChange, value, id = `input-${Math.random().toString(36).substr(2, 9)}`,onFocus, onBlur }, ref) => {
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {

@@ -1,5 +1,6 @@
-import styles from './Sidebar.module.scss'
 import { NavLink } from 'react-router-dom'
+
+import styles from './Sidebar.module.scss'
 
 export const Sidebar = () => {
     return (
@@ -30,7 +31,6 @@ export const Sidebar = () => {
                     </NavLink>
                 </li>
             </ul>
-
         </nav>
     )
 }

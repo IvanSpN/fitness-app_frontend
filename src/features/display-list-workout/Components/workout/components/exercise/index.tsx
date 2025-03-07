@@ -1,14 +1,16 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
 import styles from './index.module.scss'
+import { useAppSelector } from '../../../../../../shared/Redux/hooks';
+import { getExercisesListItemsAPI } from '../../../../../create-workout/redux/thunks';
+import { useAppDispatch } from '../../../../../../shared/Redux/store';
 
 interface ExerciseProps {
-    id: any,
+    uuid: string,
     name: string,
     sets: number,
     reps: number,
     weight?: number
-
 }
 const getRepsForm = (reps: number): string => {
     const pluralRules = new Intl.PluralRules('ru', { type: 'cardinal' });
@@ -33,7 +35,29 @@ const getSetsForm = (sets: number): string => {
     }
 }
 
-export const Exercise: React.FC<ExerciseProps> = ({ name, sets, reps, weight }) => {
+export const Exercise: React.FC<ExerciseProps> = ({ name, sets, reps, weight, uuid }) => {
+
+    const dispatch =  useAppDispatch()
+
+    const exercise = useAppSelector((state)=> state.createWorkout.dataExercisesList.find((el)=> el.uuid === uuid))
+    //  useEffect(() => {
+    //     const fetchData = async () => {
+    //       try {
+    //         const data = await dispatch(getExercisesListItemsAPI()).unwrap()
+    //         console.log('Получены все упражнения:', data);
+    //       } catch (err: unknown) {
+    //         if (err instanceof Error) {
+    //           console.error('Ошибка при загрузке:', err.message);
+    //         } else {
+    //           console.error('Неизвестная ошибка:', err);
+    //         }
+    //       }
+    //     };
+    //     fetchData();
+    //   }, [dispatch])
+
+
+
 
     return (
         <div className={styles.wrapper}>

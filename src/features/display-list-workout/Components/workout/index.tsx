@@ -1,40 +1,44 @@
 import React from 'react'
-import { IExercise } from '../../../create-workout/redux/slice';
+
 import { MyButton } from '../../../UI/button/MyButton';
 import { useAppDispatch } from '../../../../shared/Redux/store';
-import { delWorkout } from '../../../display-list-workout/redux/slice';
+import { setRescheduleDate, setRescheduleWorkouts, } from '../../../display-list-workout/redux/slice';
 import { useAppSelector } from '../../../../shared/Redux/hooks'
 import { IEditWorkoutInitialState, toggleModal, setEditWorkout, setModalMode } from '../../../edit-workout/redux/slice';
+import { Exercise } from './components/exercise';
 
 import styles from './index.module.scss'
-import { Exercise } from './components/exercise';
+import { DateSetup } from '../../../../shared/Components/data-setup';
+import { IWorkoutExercise } from '../../../create-workout/redux/types';
+import { deleteWorkoutAPI, markSkipWorkout } from '../../redux/thuks';
 
 interface WorkoutProps {
     date: string | null
-    id: number
+    uuid: string
     intensity: null | string
     type: null | string
-    exercises: IExercise[]
+    exercises: IWorkoutExercise[]
+    isSkip: boolean
 }
 
-export const Workout: React.FC<WorkoutProps> = ({ date, id, exercises, intensity, type }) => {
+export const Workout: React.FC<WorkoutProps> = ({ date, uuid, intensity, type, isSkip, exercises }) => {
+
     const dispatch = useAppDispatch()
 
-    const { workouts } = useAppSelector(state => state.displayListWorkout)
+    const workout = useAppSelector(state => state.displayListWorkout.workouts.find((el) => el.uuid === uuid))
 
-    const findWorlutById = (id: number) => {
-        return workouts.find((workout) => workout.id === id)
+    // const findWorkoutById = (uuid: string) => {
+    //     return workouts.find((workout) => workout.uuid === uuid)
+    // }
 
+    const handlerDeleteWorkout = (uuid: string) => {
+        dispatch(deleteWorkoutAPI(uuid))
     }
 
-    const handlerDeleteWorkout = (id: number) => {
-        dispatch(delWorkout(id))
-    }
+    const handlerEditWorkout = (mode: IEditWorkoutInitialState['mode']) => {
 
-    const handlerEditWorkout = (id: number, mode: IEditWorkoutInitialState['mode']) => {
-        const foundWorkout = findWorlutById(id)
-        if (foundWorkout) {
-            dispatch(setEditWorkout(foundWorkout))
+        if (workout) {
+            dispatch(setEditWorkout(workout))
             dispatch(setModalMode(mode))
             dispatch(toggleModal({ modal: 'mainModalOpen', value: true }))
         }
@@ -48,27 +52,63 @@ export const Workout: React.FC<WorkoutProps> = ({ date, id, exercises, intensity
             year: 'numeric'
         }).format(date);
     }
+
+    const handlerToggleSkip = () => {
+        dispatch(markSkipWorkout(uuid))
+    }
+
+    const handlerRescheduleDate = (newDate: Date | null) => {
+        const formattedDate = newDate ? newDate.toISOString() : null;
+        dispatch(setRescheduleDate({ uuid, date: formattedDate }));
+    }
+
+    const handlerRescheduleWorkouts = (newDate: Date | null) => {
+        const formattedDate = newDate ? newDate.toISOString() : null;
+        dispatch(setRescheduleWorkouts({ uuid, date: formattedDate }))
+    }
+
     return (
-        <div className={styles.wrapper}>
+        <div className={`${styles.wrapper} ${isSkip ? styles.skipActive : ''}`}>
             <div className={styles.topBlock}>
-                <h2>{id}</h2>
+                <h2>{uuid}</h2>
                 <div className={styles.infoBlock}>
                     <p className={styles.intensityInfo}>Интенсивновсть: {intensity}</p>
                     {type && <p className={styles.intensityInfo}>Тип: {type}</p>}
                 </div>
             </div>
             <h3>{date ? formatDate(date) : 'Нет даты'}</h3>
-            <div>
-                {exercises.map((exercise) => <Exercise key={exercise.id}
-                    id={exercise.id}
-                    name={exercise.name}
-                    sets={exercise.sets}
-                    reps={exercise.reps}
-                    weight={exercise.weight} />)}
+            <div className={styles.middle_block}>
+                <div className={styles.skip_wrapper}>
+                    {isSkip ? <MyButton className={styles.btnSkip} onClick={handlerToggleSkip}>Отменить пометку пропущенной тренировки</MyButton>
+                        : <MyButton className={styles.btnSkip} onClick={handlerToggleSkip}>Отметить тренировку как пропущенную?</MyButton>
+                    }
+                </div>
+                <div className={styles.reschedule_wrapper}>
+                    <p>Перенести тренировку на: <DateSetup value={date} onChange={handlerRescheduleDate} /></p>
+                </div>
+                <div className={styles.reschedule_wrapper}>
+                    <p>Перенести тренировку СО СМЕЩЕНИЕМ на: <DateSetup value={date} onChange={handlerRescheduleWorkouts} /></p>
+                </div>
             </div>
-            <MyButton className={styles.btn_del} onClick={() => handlerDeleteWorkout(id)}>Удалить тренировку</MyButton>
-            <MyButton className={styles.btn_del} onClick={() => handlerEditWorkout(id, 'edit')}>Редактировать тренировку</MyButton>
-            <MyButton className={styles.btn_del} onClick={() => handlerEditWorkout(id, 'copy')}>Копировать тренировку</MyButton>
+            <div>
+                {exercises && exercises.length > 0 ? (
+                    exercises.map((exercise) => (
+                        <Exercise
+                            key={exercise.exercise_uuid}
+                            uuid={exercise.exercise_uuid}
+                            name={exercise.exercise?.name || ''}
+                            sets={exercise.sets}
+                            reps={exercise.reps}
+                            weight={exercise.weight}
+                        />
+                    ))
+                ) : (
+                    <p>Нет упражнений для этой тренировки.</p>
+                )}
+            </div>
+            <MyButton className={styles.btn_del} onClick={() => handlerDeleteWorkout(uuid)}>Удалить тренировку</MyButton>
+            <MyButton className={styles.btn_del} onClick={() => handlerEditWorkout('edit')}>Редактировать тренировку</MyButton>
+            <MyButton className={styles.btn_del} onClick={() => handlerEditWorkout('copy')}>Копировать тренировку</MyButton>
         </div>
     )
 }

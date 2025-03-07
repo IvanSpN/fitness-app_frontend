@@ -1,5 +1,7 @@
 import { useRef, useState } from 'react'
 import Select from 'rc-select';
+import { v4 as uuidv4 } from 'uuid';
+
 
 import { IoCloseOutline } from "react-icons/io5";
 
@@ -38,7 +40,7 @@ export const EditWorkoutModal = () => {
 
     const handlerUpdateWorkout = () => {
         if (mode == 'copy') {
-            dispatch(addWorkout({ ...workout, id: Date.now() }))
+            dispatch(addWorkout({ ...workout, uuid: uuidv4()}))
             dispatch(toggleModal({ modal: 'mainModalOpen', value: false }))
         }
         else if (mode == 'edit') {
@@ -55,8 +57,8 @@ export const EditWorkoutModal = () => {
         }
     };
 
-    const handlerDelExercise = (id: number) => {
-        dispatch(setDelWorkout(id))
+    const handlerDelExercise = (uuid: string) => {
+        dispatch(setDelWorkout(uuid))
 
     };
 
@@ -124,7 +126,7 @@ export const EditWorkoutModal = () => {
                         <td style={{ minWidth: '50px' }}></td>
                     </tr>
                     {workout.exercises.map((exercise) => (
-                        <ExerciseEditWorkoutModal key={exercise.id} exercise={exercise} handlerDelExercise={handlerDelExercise} />
+                        <ExerciseEditWorkoutModal key={exercise.exercise_uuid} exercise={exercise} handlerDelExercise={handlerDelExercise} />
                     ))}
                 </table>
             </div>

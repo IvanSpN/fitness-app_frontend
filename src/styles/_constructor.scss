@@ -1,20 +1,14 @@
-.constructor {
+.constructor-wrapper {
     display: flex;
     justify-content: end;
     width: 100%;
 }
 
-.www {
+.constructor {
     width: calc(100% - 300px);
     display: flex;
     gap: 20px;
 }
-
-// .wpapper-blocks{
-//     display: flex;
-//     justify-content: space-between;
-
-// }
 
 .left-block {
     border: 1px solid red;

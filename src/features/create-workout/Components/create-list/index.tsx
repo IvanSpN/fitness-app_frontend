@@ -1,6 +1,8 @@
 import dayjs from 'dayjs'
 import 'dayjs/locale/ru';
 dayjs.locale('ru');
+import { v4 as uuidv4 } from 'uuid';
+
 
 import { useAppSelector } from '../../../../shared/Redux/hooks'
 import { useAppDispatch } from '../../../../shared/Redux/store'
@@ -10,13 +12,13 @@ import { DateSetup } from '../../../../shared/Components/data-setup'
 
 import { deleteAllFormList, setIntensity, setType, submitForm } from '../../redux/slice'
 import { deleteDate, setDate } from '../../redux/slice'
-import { addWorkout } from '../../../display-list-workout/redux/slice'
 
 import { CreateItem } from './components/create-item'
 
 
 import styles from './index.module.scss'
 import Select from 'rc-select';
+import { createWorkoutAPI } from '../../redux/thunks';
 
 export const optionsIntensity = ['легкая', 'средняя', 'тяжелая']
 export const optionsType = ['силовая', 'беговая', 'с собственным весом', 'круговая']
@@ -30,23 +32,30 @@ export const CreateList = () => {
     const today = dayjs();
 
     const onCreate = () => {
+
         const newWorkout = {
             ...workout,
-            id: Date.now(),
-            date: dateCreateWorkout,
-            exercises: [...formList]
+            uuid: uuidv4(),
+            type: workout.type,
+            intensity: workout.intensity,
+            date: workout.date,
+            isSkip: false,
+            isDone: false,
+            user_uuid: "5ea9205f-aff3-48a5-b865-23c872829198"
         }
-        dispatch(addWorkout(newWorkout))
+
+        dispatch(createWorkoutAPI(newWorkout))
         dispatch(submitForm())
         dispatch(setDate(null))
-        dispatch(setIntensity('легкая'))
+        dispatch(setIntensity(optionsIntensity[0]))
+        dispatch(setType(optionsType[0]))
     }
 
     const handlerDeleteAll = () => {
         dispatch(deleteAllFormList())
         dispatch(deleteDate())
-        dispatch(setIntensity('легкая'))
-        dispatch(setType(null))
+        dispatch(setIntensity(optionsIntensity[0]))
+        dispatch(setType(optionsType[0]))
 
     }
 
@@ -79,7 +88,7 @@ export const CreateList = () => {
                     }
                 </div>
                 <div className={styles.selectBlock}>
-                    {formList.length > 0 && <div className={styles.intensityBlock}>
+                    {workout.exercises.length > 0 && <div className={styles.intensityBlock}>
                         <label htmlFor="intensity-select">Интенсивность тренировки:</label>
                         <Select
                             id="intensity-select"
@@ -89,7 +98,7 @@ export const CreateList = () => {
                             options={optionsIntensity.map(option => ({ value: option, label: option }))}
                         />
                     </div>}
-                    {formList.length > 0 && <div className={styles.intensityBlock}>
+                    {workout.exercises.length > 0 && <div className={styles.intensityBlock}>
                         <label htmlFor="intensity-select">Тип тренировки:</label>
                         <Select
                             id="intensity-select"
@@ -102,11 +111,12 @@ export const CreateList = () => {
                 </div>
             </div>
             <div className={styles.create_exercise_wrapper}>
-                {formList.map((exercise, index) =>
-                    <CreateItem exercise={exercise} key={exercise.id} index={index} />
+                {workout.exercises.map((exercise, index) =>
+                    <CreateItem exercise={exercise} key={exercise.exercise_uuid} index={index} />
+
                 )}
             </div>
-            {formList.length > 0 && <MyButton className={styles.button_ok} onClick={onCreate}>Добавить тренировку</MyButton>
+            {workout.exercises.length > 0 && <MyButton className={styles.button_ok} onClick={onCreate}>Добавить тренировку</MyButton>
             }
         </div>
     )

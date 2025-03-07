@@ -2,6 +2,7 @@
     border: 1px solid red;
     padding: 10px;
     max-width: fit-content;
+    margin-bottom: 10px;
 }
 
 .topBlock{
@@ -28,4 +29,38 @@
     display: flex;
     flex-direction: column;
     row-gap: 15px;
+}
+
+.skip_wrapper{
+
+}
+
+.btnSkip{
+    background-color: yellowgreen;
+    margin-bottom: 10px;
+}
+.skipActive{
+    filter: grayscale(5);
+}
+
+.answersSkip{
+    display: flex;
+    gap: 20px  ;
+}
+
+.answer{
+
+}
+
+.active{
+    border: 1px solid red;
+}
+
+.middle_block{
+    display: flex;
+    gap: 20px;
+}
+
+.reschedule_wrapper{
+    border: 1px solid burlywood;
 }

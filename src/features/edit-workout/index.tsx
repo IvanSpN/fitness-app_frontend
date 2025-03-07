@@ -3,10 +3,10 @@ import React from 'react'
 import { useAppSelector } from '../../shared/Redux/hooks'
 import { useAppDispatch } from '../../shared/Redux/store'
 
-import {MyModal} from '../UI/modal/MyModal'
+import { MyModal } from '../UI/modal/MyModal'
 import { EditWorkoutModal } from './Components/modal-edit-workout'
 
-import { AddExerciseModal } from './Components/modal-add-exercise'
+import { AddExerciseToWorkoutModal } from './Components/modal-add-exercise-to-workout'
 
 import { toggleModal } from './redux/slice'
 
@@ -31,7 +31,7 @@ export const EditWorkout: React.FC = () => {
         <EditWorkoutModal />
       </MyModal>
       <MyModal isOpen={modal.addExcersiseOpen} onClose={() => handlerCloseAddExcersiseModal()}>
-        <AddExerciseModal />
+        <AddExerciseToWorkoutModal />
       </MyModal>
     </>
   )

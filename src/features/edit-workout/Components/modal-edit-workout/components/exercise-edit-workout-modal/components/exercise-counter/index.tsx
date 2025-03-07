@@ -3,28 +3,28 @@ import React from 'react'
 import { Counter } from './components/counter'
 
 import { useAppDispatch } from '../../../../../../../../shared/Redux/store'
-import { IExercise } from '../../../../../../../create-workout/redux/slice'
 import { setDecrementField, setIncrementField } from '../../../../../../redux/slice'
 
 import styles from './index.module.scss'
 import { useAppSelector } from '../../../../../../../../shared/Redux/hooks'
+import { IWorkoutExercise } from '../../../../../../../create-workout/redux/types'
 
 interface ExerciseCounterProps {
-    exercise: IExercise
+    exercise: IWorkoutExercise
 }
 
 export const ExerciseCounter: React.FC<ExerciseCounterProps> = ({ exercise }) => {
 
     const dispatch = useAppDispatch()
 
-    const {stepCouter} = useAppSelector(state => state.editWorkout)
+    const { stepCouter } = useAppSelector(state => state.editWorkout)
 
     const handleIncrement = (field: 'sets' | 'reps' | 'weight', step: string) => {
-        dispatch(setIncrementField({ exerciseId: exercise.id, field , step}))
+        dispatch(setIncrementField({ exerciseId: exercise.exercise_uuid, field, step }))
     };
 
     const handleDecrement = (field: 'sets' | 'reps' | 'weight', step: string) => {
-        dispatch(setDecrementField({ exerciseId: exercise.id, field, step }))
+        dispatch(setDecrementField({ exerciseId: exercise.exercise_uuid, field, step }))
     };
 
     return (
@@ -33,7 +33,7 @@ export const ExerciseCounter: React.FC<ExerciseCounterProps> = ({ exercise }) =>
                 <Counter
                     value={exercise.sets}
                     onIncrement={() => handleIncrement('sets', stepCouter)}
-                    onDecrement={() => handleDecrement('sets',stepCouter)}
+                    onDecrement={() => handleDecrement('sets', stepCouter)}
                 />
             </td>
             <td>
@@ -47,7 +47,7 @@ export const ExerciseCounter: React.FC<ExerciseCounterProps> = ({ exercise }) =>
                 <Counter
                     value={exercise.weight ?? 1}
                     onIncrement={() => handleIncrement('weight', stepCouter)}
-                    onDecrement={() => handleDecrement('weight',stepCouter)}
+                    onDecrement={() => handleDecrement('weight', stepCouter)}
                 />
             </td>
         </>
