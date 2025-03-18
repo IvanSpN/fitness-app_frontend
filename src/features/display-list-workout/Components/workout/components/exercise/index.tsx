@@ -40,24 +40,6 @@ export const Exercise: React.FC<ExerciseProps> = ({ name, sets, reps, weight, uu
     const dispatch =  useAppDispatch()
 
     const exercise = useAppSelector((state)=> state.createWorkout.dataExercisesList.find((el)=> el.uuid === uuid))
-    //  useEffect(() => {
-    //     const fetchData = async () => {
-    //       try {
-    //         const data = await dispatch(getExercisesListItemsAPI()).unwrap()
-    //         console.log('Получены все упражнения:', data);
-    //       } catch (err: unknown) {
-    //         if (err instanceof Error) {
-    //           console.error('Ошибка при загрузке:', err.message);
-    //         } else {
-    //           console.error('Неизвестная ошибка:', err);
-    //         }
-    //       }
-    //     };
-    //     fetchData();
-    //   }, [dispatch])
-
-
-
 
     return (
         <div className={styles.wrapper}>

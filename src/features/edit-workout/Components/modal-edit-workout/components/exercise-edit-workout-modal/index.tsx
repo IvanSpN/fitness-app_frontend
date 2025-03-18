@@ -9,7 +9,6 @@ interface ExerciseModalProps {
 }
 
 export const ExerciseEditWorkoutModal: React.FC<ExerciseModalProps> = ({ exercise, handlerDelExercise }) => {
-    console.log('exe', exercise);
 
     return (
         <tr className={styles.wrapper}>

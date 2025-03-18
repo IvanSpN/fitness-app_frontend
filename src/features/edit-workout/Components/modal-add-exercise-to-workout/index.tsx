@@ -29,7 +29,7 @@ export const AddExerciseToWorkoutModal = () => {
   const prepareCheckedExercises = (exerciseList: Exercises.Types.ExerciseChecked[]): Exercises.Response.WorkoutExercise []=> {
     return exerciseList.filter((exercise) => exercise.checked).map(({ uuid, name, isWeight }) => ({
       exercise_uuid: uuid,
-    uuid,
+      uuid,
       name,
       isWeight,
       sets: 0,

@@ -10,7 +10,8 @@ import { Exercise } from './components/exercise';
 import styles from './index.module.scss'
 import { DateSetup } from '../../../../shared/Components/data-setup';
 import { Exercises } from '../../../create-workout/redux/types';
-import { deleteWorkoutAPI, markSkipWorkoutAPI, rescheduleWorkoutAPI } from '../../redux/thuks';
+import { deleteWorkoutAPI, markSkipWorkoutAPI, rescheduleWorkoutAPI, rescheduleWorkoutWithShiftAPI } from '../../redux/thuks';
+import dayjs from 'dayjs';
 
 interface WorkoutProps {
     date: string | null
@@ -26,11 +27,6 @@ export const Workout: React.FC<WorkoutProps> = ({ date, uuid, intensity, type, i
     const dispatch = useAppDispatch()
 
     const workout = useAppSelector(state => state.displayListWorkout.workouts.find((workout) => workout.uuid === uuid))
-    console.log('work', workout);
-
-    // const findWorkoutById = (uuid: string) => {
-    //     return workouts.find((workout) => workout.uuid === uuid)
-    // }
 
     const handlerDeleteWorkout = (uuid: string) => {
         dispatch(deleteWorkoutAPI(uuid))
@@ -65,7 +61,14 @@ export const Workout: React.FC<WorkoutProps> = ({ date, uuid, intensity, type, i
     }
 
     const handlerRescheduleWorkouts = (newDate: Date | null) => {
+
+        const oldDate = dayjs(date)
+        const newDateDayJS = dayjs(newDate)
+
+        const diffInDays = newDateDayJS.diff(oldDate, 'day')
+
         const formattedDate = newDate ? newDate.toISOString() : null;
+        dispatch(rescheduleWorkoutWithShiftAPI({uuid: uuid, days: diffInDays }))
         dispatch(setRescheduleWorkouts({ uuid, date: formattedDate }))
     }
 

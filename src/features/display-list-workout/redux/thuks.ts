@@ -83,3 +83,26 @@ export const rescheduleWorkoutAPI = createAsyncThunk(
         }
     }
 )
+export const rescheduleWorkoutWithShiftAPI = createAsyncThunk(
+    'workout/rescheduleWithShift',
+    async ({ uuid, days }: { uuid: string; days: number }, { rejectWithValue }) => {
+        try {
+            const resp = await Workouts.Request.rescheduleWithShift({ uuid, days })
+
+            return resp
+        } catch (error: any) {
+            // Используем axios.isAxiosError для проверки, является ли ошибка ошибкой от axios
+            if (axios.isAxiosError(error)) {
+                // Если это ошибка от axios, то можно получить доступ к свойствам ошибки
+                console.error('Ошибка при запросе:', error.message)
+                return rejectWithValue(error.response?.data || error.response?.statusText || 'Ошибка на сервере')
+            } else if (error instanceof Error) {
+                // Если ошибка - обычная ошибка JavaScript
+                return rejectWithValue(error.message)
+            } else {
+                // Если ошибка неизвестного типа
+                return rejectWithValue('Неизвестная ошибка')
+            }
+        }
+    }
+)

@@ -111,6 +111,10 @@ export namespace Workouts {
             uuid: string
             date: string
         }
+        export interface RescheduleWorkoutWithShift {
+            uuid: string
+            days: number
+        }
     }
     export namespace Response {
         export interface Item {
@@ -137,6 +141,9 @@ export namespace Workouts {
         }
         export const reschedule = async (dto: Dto.RescheduleWorkout): Promise<Response.Item> => {
             return (await axios.patch(`${API_URL}/${controller}/${dto.uuid}/reschedule-workout/`, dto)).data
+        }
+        export const rescheduleWithShift = async (dto: Dto.RescheduleWorkoutWithShift): Promise<Response.Item> => {
+            return (await axios.patch(`${API_URL}/${controller}/${dto.uuid}/reschedule-shift/`, dto)).data
         }
     }
 }
