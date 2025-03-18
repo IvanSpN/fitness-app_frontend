@@ -5,11 +5,11 @@ import { v4 as uuidv4 } from "uuid";
 import styles from './index.module.scss'
 import Select from 'rc-select'
 import { useAppDispatch } from '../../../../../../shared/Redux/store'
-import { useAppSelector } from '../../../../../../shared/Redux/hooks'
 import {  toggleModal } from '../../../../redux/slice'
 import { MyButton } from '../../../../../UI/button/MyButton'
 import { MyInput, TInputValue } from '../../../../../UI/input/MyInput'
 import { addExerciseToBaseAPI } from '../../../../redux/thunks';
+import { Exercises } from '../../../../redux/types';
 
 
 export const AddExerciseToBaseModal = () => {
@@ -32,7 +32,7 @@ export const AddExerciseToBaseModal = () => {
     setType(value)
   }
   const handlerAddExerciseToBase = () => {
-    const newExercise = {
+    const newExercise: Exercises.Dto.Create = {
       uuid: uuidv4(),
       name: exerciseName,
       isWeight: isWeigth,

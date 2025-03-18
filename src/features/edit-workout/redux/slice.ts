@@ -1,17 +1,14 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
-import { INewWorkout } from '../../display-list-workout/redux/types'
-import { IWorkoutExercise } from '../../create-workout/redux/types'
-import {  IAddExersiceWithChecked } from './types'
-
-
+import { Exercises, Workouts } from '../../create-workout/redux/types'
 
 export interface IEditWorkoutInitialState {
-    dataExerciseListAdd: IAddExersiceWithChecked[]
-    workout: INewWorkout | null
+    dataExerciseListAdd: Exercises.Types.ExerciseChecked[]
+    workout: Workouts.Response.Item | null
     mode: 'copy' | 'edit'
     modal: {
         mainModalOpen: boolean
         addExcersiseOpen: boolean
+
     }
     stepCouter: string
 }
@@ -30,15 +27,15 @@ export const editWorkoutSlice = createSlice({
     name: 'editWorkout',
     initialState: editWorkoutInitialState,
     reducers: {
-        setExercisesListAdd: (state, { payload }: PayloadAction<IAddExersiceWithChecked[]>) => {
+        setExercisesListAdd: (state, { payload }: PayloadAction<Exercises.Types.ExerciseChecked[]>) => {
             state.dataExerciseListAdd = payload
         },
-        setAddExercise: (state, { payload }: PayloadAction<IWorkoutExercise[]>) => {
+        setAddExercise: (state, { payload }: PayloadAction<Exercises.Response.WorkoutExercise []>) => {
             if (state.workout?.exercises) {
                 state.workout.exercises = state.workout.exercises.concat(payload)
             }
         },
-        setEditWorkout: (state, { payload }: PayloadAction<INewWorkout>) => {
+        setEditWorkout: (state, { payload }: PayloadAction<Workouts.Response.Item>) => {
             state.workout = payload
         },
         setModalMode: (state, { payload }: PayloadAction<IEditWorkoutInitialState['mode']>) => {
@@ -73,7 +70,7 @@ export const editWorkoutSlice = createSlice({
                 state.workout.date = payload
             }
         },
-        setDelWorkout: (state, { payload }: PayloadAction<IWorkoutExercise['exercise_uuid']>) => {
+        setDelExercise: (state, { payload }: PayloadAction<Exercises.Types.WorkoutExercise['exercise_uuid']>) => {
             if (state.workout) {
                 state.workout.exercises = state.workout.exercises.filter(exercise => exercise.exercise_uuid !== payload)
             }
@@ -84,12 +81,12 @@ export const editWorkoutSlice = createSlice({
         setClearStepCounter: state => {
             state.stepCouter = ' '
         },
-        setChangeIntensity: (state, { payload }: PayloadAction<INewWorkout['intensity']>) => {
+        setChangeIntensity: (state, { payload }: PayloadAction<Workouts.Types.Workout['intensity']>) => {
             if (state.workout) {
                 state.workout.intensity = payload
             }
         },
-        setChangeType: (state, { payload }: PayloadAction<INewWorkout['type']>) => {
+        setChangeType: (state, { payload }: PayloadAction<Workouts.Types.Workout['type']>) => {
             if (state.workout) {
                 state.workout.type = payload
             }
@@ -119,7 +116,7 @@ export const {
     setDecrementField,
     setModalMode,
     setWorkoutDate,
-    setDelWorkout,
+    setDelExercise,
     setStepCounter,
     setClearStepCounter,
     setChangeIntensity,

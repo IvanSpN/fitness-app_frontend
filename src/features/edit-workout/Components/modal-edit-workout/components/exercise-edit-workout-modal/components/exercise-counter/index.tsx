@@ -7,10 +7,10 @@ import { setDecrementField, setIncrementField } from '../../../../../../redux/sl
 
 import styles from './index.module.scss'
 import { useAppSelector } from '../../../../../../../../shared/Redux/hooks'
-import { IWorkoutExercise } from '../../../../../../../create-workout/redux/types'
+import { Exercises } from '../../../../../../../create-workout/redux/types'
 
 interface ExerciseCounterProps {
-    exercise: IWorkoutExercise
+    exercise: Exercises.Types.WorkoutExercise
 }
 
 export const ExerciseCounter: React.FC<ExerciseCounterProps> = ({ exercise }) => {

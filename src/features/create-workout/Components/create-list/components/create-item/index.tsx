@@ -4,19 +4,17 @@ import 'rc-select/assets/index.css';
 
 import { MyButton } from '../../../../../UI/button/MyButton'
 import { useAppDispatch } from '../../../../../../shared/Redux/store'
-import { delExerciseFromWorkout, setWorkoutToCreate } from '../../../../redux/slice'
+import {  setWorkoutToCreate , delExerciseFromWorkout} from '../../../../redux/slice'
 
 import styles from './index.module.scss'
-import { useAppSelector } from '../../../../../../shared/Redux/hooks';
-import { IWorkoutExercise } from '../../../../redux/types';
+import { Exercises } from '../../../../redux/types';
 
 interface CreateItemProps {
-  exercise: IWorkoutExercise
+  exercise: Exercises.Types.WorkoutExercise
   index: number
 }
 
 export const CreateItem: React.FC<CreateItemProps> = ({ exercise }) => {
-  console.log('exer', exercise);
 
   const dispatch = useAppDispatch()
 
@@ -101,3 +99,5 @@ export const CreateItem: React.FC<CreateItemProps> = ({ exercise }) => {
     </div>
   )
 }
+
+

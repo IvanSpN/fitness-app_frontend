@@ -5,9 +5,9 @@ import { useAppSelector } from "../../../../shared/Redux/hooks"
 import { MyButton } from "../../../UI/button/MyButton"
 import { ExerciseAdd } from "./components/exercise-add"
 
-import { IAddExersice, IAddExersiceWithChecked } from "../../redux/types"
 
 import styles from './index.module.scss'
+import { Exercises } from "../../../create-workout/redux/types"
 
 export const AddExerciseToWorkoutModal = () => {
 
@@ -17,7 +17,7 @@ export const AddExerciseToWorkoutModal = () => {
   const { dataExerciseListAdd } = useAppSelector(state => state.editWorkout)
   const { workout } = useAppSelector(state => state.editWorkout)
 
-  const dataExerciseEdit: IAddExersiceWithChecked[] = dataExercisesList.map(({ uuid, name, isWeight }) => ({
+  const dataExerciseEdit: Exercises.Types.ExerciseChecked [] = dataExercisesList.map(({ uuid, name, isWeight, }) => ({
     uuid,
     name,
     isWeight,
@@ -26,13 +26,16 @@ export const AddExerciseToWorkoutModal = () => {
 
   const filterDataExercise = dataExerciseEdit.filter((exercise) => !workout?.exercises.some((workoutExercise) => workoutExercise.exercise_uuid === exercise.uuid));
 
-  const prepareCheckedExercises = (exerciseList: IAddExersiceWithChecked[]) => {
-    return exerciseList.filter((exercise) => exercise.checked).map(({ uuid, name,  }) => ({
+  const prepareCheckedExercises = (exerciseList: Exercises.Types.ExerciseChecked[]): Exercises.Response.WorkoutExercise []=> {
+    return exerciseList.filter((exercise) => exercise.checked).map(({ uuid, name, isWeight }) => ({
       exercise_uuid: uuid,
+    uuid,
       name,
+      isWeight,
       sets: 0,
       reps: 0,
       weight: 0,
+      exercise: {name}
     }))
   }
 

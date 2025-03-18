@@ -10,7 +10,7 @@ import { useAppDispatch } from '../../../../shared/Redux/store'
 import { MyButton } from '../../../UI/button/MyButton'
 import { DateSetup } from '../../../../shared/Components/data-setup'
 
-import { deleteAllFormList, setIntensity, setType, submitForm } from '../../redux/slice'
+import { setIntensity, setType, submitForm } from '../../redux/slice'
 import { deleteDate, setDate } from '../../redux/slice'
 
 import { CreateItem } from './components/create-item'
@@ -19,6 +19,7 @@ import { CreateItem } from './components/create-item'
 import styles from './index.module.scss'
 import Select from 'rc-select';
 import { createWorkoutAPI } from '../../redux/thunks';
+import { Workouts } from '../../redux/types';
 
 export const optionsIntensity = ['легкая', 'средняя', 'тяжелая']
 export const optionsType = ['силовая', 'беговая', 'с собственным весом', 'круговая']
@@ -27,13 +28,14 @@ export const CreateList = () => {
 
     const dispatch = useAppDispatch()
 
-    const { formList, workout, dateCreateWorkout } = useAppSelector(state => state.createWorkout)
+    const {  workout, dateCreateWorkout  } = useAppSelector(state => state.createWorkout)
+    const {   workouts } = useAppSelector(state => state.displayListWorkout)
 
     const today = dayjs();
 
     const onCreate = () => {
 
-        const newWorkout = {
+        const newWorkout: Workouts.Dto.Create = {
             ...workout,
             uuid: uuidv4(),
             type: workout.type,
@@ -52,7 +54,6 @@ export const CreateList = () => {
     }
 
     const handlerDeleteAll = () => {
-        dispatch(deleteAllFormList())
         dispatch(deleteDate())
         dispatch(setIntensity(optionsIntensity[0]))
         dispatch(setType(optionsType[0]))
@@ -84,7 +85,7 @@ export const CreateList = () => {
                 <div>
                     <h3>Тренировка на дату:</h3>
                     <DateSetup value={dateCreateWorkout} onChange={handleDateChange} />
-                    {(formList.length > 0 || dateCreateWorkout) && <MyButton className={styles.btn_dellAll} onClick={handlerDeleteAll}>Удалить всё</MyButton>
+                    {(workouts.length > 0 || dateCreateWorkout) && <MyButton className={styles.btn_dellAll} onClick={handlerDeleteAll}>Удалить всё</MyButton>
                     }
                 </div>
                 <div className={styles.selectBlock}>

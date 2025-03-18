@@ -9,7 +9,7 @@ import { MyButton } from '../../../UI/button/MyButton'
 import { MyInput } from '../../../UI/input/MyInput'
 import { ExerciseEditWorkoutModal } from './components/exercise-edit-workout-modal'
 
-import { toggleModal, setDelWorkout, setWorkoutDate, setStepCounter, setClearStepCounter, setChangeIntensity, setChangeType } from '../../redux/slice'
+import { toggleModal, setDelExercise as setDelExercise, setWorkoutDate, setStepCounter, setClearStepCounter, setChangeIntensity, setChangeType } from '../../redux/slice'
 import { addWorkout, updateWorkout } from '../../../display-list-workout/redux/slice'
 import { useAppSelector } from '../../../../shared/Redux/hooks'
 import { useAppDispatch } from '../../../../shared/Redux/store'
@@ -40,7 +40,7 @@ export const EditWorkoutModal = () => {
 
     const handlerUpdateWorkout = () => {
         if (mode == 'copy') {
-            dispatch(addWorkout({ ...workout, uuid: uuidv4()}))
+            dispatch(addWorkout({ ...workout, uuid: uuidv4() }))
             dispatch(toggleModal({ modal: 'mainModalOpen', value: false }))
         }
         else if (mode == 'edit') {
@@ -58,7 +58,7 @@ export const EditWorkoutModal = () => {
     };
 
     const handlerDelExercise = (uuid: string) => {
-        dispatch(setDelWorkout(uuid))
+        dispatch(setDelExercise(uuid))
 
     };
 

@@ -1,11 +1,10 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import { IExercisesListItemFromAPI, IExercisesListItemPushAPI } from './types'
+import { Exercises, Workouts } from './types'
 import axios from 'axios'
-import { INewWorkout } from '../../display-list-workout/redux/types'
 
 export const getExercisesListItemsAPI = createAsyncThunk('exercises/fetchAll', async (_, { rejectWithValue }) => {
     try {
-        const { data } = await axios.get<IExercisesListItemFromAPI[]>(`http://localhost:5050/api/exercises/`)
+        const { data } = await axios.get<Exercises.Response.Item[]>(`http://localhost:5050/api/exercises/`)
         return data
     } catch (error: unknown) {
         // Проверка, является ли ошибка ошибкой axios
@@ -31,9 +30,9 @@ export const getExercisesListItemsAPI = createAsyncThunk('exercises/fetchAll', a
 export const addExerciseToBaseAPI = createAsyncThunk(
     'exercises/addExercise',
 
-    async (newExercise: IExercisesListItemPushAPI, { rejectWithValue }) => {
+    async (newExercise: Exercises.Dto.Create, { rejectWithValue }) => {
         try {
-            const { data } = await axios.post<IExercisesListItemFromAPI>(
+            const { data } = await axios.post<Exercises.Response.Item>(
                 `http://localhost:5050/api/exercises/`,
                 newExercise
             )
@@ -92,7 +91,7 @@ export const removeExerciseToBaseAPI = createAsyncThunk(
 export const updateExercise = createAsyncThunk(
     'exercises/update',
     async (
-        { uuid, updateExercise }: { uuid: string; updateExercise: Partial<IExercisesListItemFromAPI> },
+        { uuid, updateExercise }: { uuid: string; updateExercise: Partial<Exercises.Dto.Update> },
         { rejectWithValue }
     ) => {
         try {
@@ -122,7 +121,7 @@ export const updateExercise = createAsyncThunk(
 
 export const createWorkoutAPI = createAsyncThunk(
     'workout/create',
-    async (workout: INewWorkout, { rejectWithValue }) => {
+    async (workout: Workouts.Types.Workout, { rejectWithValue }) => {
         try {
             const response = await fetch('http://localhost:5050/api/workouts/', {
                 method: 'POST',

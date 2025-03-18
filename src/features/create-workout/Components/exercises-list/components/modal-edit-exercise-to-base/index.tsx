@@ -9,6 +9,7 @@ import { MyButton } from '../../../../../UI/button/MyButton'
 
 import styles from './index.module.scss'
 import { updateExercise } from '../../../../redux/thunks'
+import { Exercises } from '../../../../redux/types'
 
 export const EditExerciseToBaseModal = () => {
 
@@ -38,10 +39,10 @@ export const EditExerciseToBaseModal = () => {
 
     dispatch(toggleModal({ modal: 'editExerciseToBase', value: false }));
 
-    const updateExerciseData = {
+    const updateExerciseData: Exercises.Dto.Update = {
       name: exerciseName || '',
       isWeight: isWeight ?? false,
-      type: type || 'силовая'
+      type: type || 'силовая',
     }
     dispatch(updateExercise({ uuid: foundExersice?.uuid, updateExercise: updateExerciseData }))
 

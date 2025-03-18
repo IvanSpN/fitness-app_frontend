@@ -2,22 +2,22 @@ import React from 'react'
 
 import { MyButton } from '../../../UI/button/MyButton';
 import { useAppDispatch } from '../../../../shared/Redux/store';
-import { setRescheduleDate, setRescheduleWorkouts, } from '../../../display-list-workout/redux/slice';
+import {  setRescheduleDate, setRescheduleWorkouts, } from '../../../display-list-workout/redux/slice';
 import { useAppSelector } from '../../../../shared/Redux/hooks'
 import { IEditWorkoutInitialState, toggleModal, setEditWorkout, setModalMode } from '../../../edit-workout/redux/slice';
 import { Exercise } from './components/exercise';
 
 import styles from './index.module.scss'
 import { DateSetup } from '../../../../shared/Components/data-setup';
-import { IWorkoutExercise } from '../../../create-workout/redux/types';
-import { deleteWorkoutAPI, markSkipWorkout } from '../../redux/thuks';
+import { Exercises } from '../../../create-workout/redux/types';
+import { deleteWorkoutAPI, markSkipWorkoutAPI, rescheduleWorkoutAPI } from '../../redux/thuks';
 
 interface WorkoutProps {
     date: string | null
     uuid: string
     intensity: null | string
     type: null | string
-    exercises: IWorkoutExercise[]
+    exercises: Exercises.Response.WorkoutExercise []
     isSkip: boolean
 }
 
@@ -25,7 +25,8 @@ export const Workout: React.FC<WorkoutProps> = ({ date, uuid, intensity, type, i
 
     const dispatch = useAppDispatch()
 
-    const workout = useAppSelector(state => state.displayListWorkout.workouts.find((el) => el.uuid === uuid))
+    const workout = useAppSelector(state => state.displayListWorkout.workouts.find((workout) => workout.uuid === uuid))
+    console.log('work', workout);
 
     // const findWorkoutById = (uuid: string) => {
     //     return workouts.find((workout) => workout.uuid === uuid)
@@ -54,11 +55,12 @@ export const Workout: React.FC<WorkoutProps> = ({ date, uuid, intensity, type, i
     }
 
     const handlerToggleSkip = () => {
-        dispatch(markSkipWorkout(uuid))
+        dispatch(markSkipWorkoutAPI(uuid))
     }
 
     const handlerRescheduleDate = (newDate: Date | null) => {
-        const formattedDate = newDate ? newDate.toISOString() : null;
+        const formattedDate = newDate ? newDate.toISOString() : "";
+        dispatch(rescheduleWorkoutAPI({uuid, date: formattedDate }))
         dispatch(setRescheduleDate({ uuid, date: formattedDate }));
     }
 

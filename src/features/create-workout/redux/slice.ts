@@ -1,14 +1,9 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 import { addExerciseToBaseAPI, getExercisesListItemsAPI, removeExerciseToBaseAPI, updateExercise } from './thunks'
-import {
-    ICreateWorkoutInitialState,
-    INewWorkout,
-    IWorkoutExercise,
-} from './types'
+import { Exercises, ICreateWorkoutInitialState, Workouts,} from './types'
 
 const createWorkoutInitialState: ICreateWorkoutInitialState = {
     dataExercisesList: [],
-    formList: [],
     workout: {
         type: 'силовая',
         date: null,
@@ -36,6 +31,13 @@ export const createWorkoutSlice = createSlice({
         setSelectedExerciseUuid: (state, { payload }) => {
             state.selectedExerciseUuid = payload
         },
+        delExerciseFromWorkout: (state, { payload }: PayloadAction<string>) => {
+            state.workout.exercises = state.workout.exercises.filter(
+                (exercise) => exercise.exercise_uuid !== payload
+            );
+        },
+
+
         // setUpdateExercise: (
         //     state,
         //     { payload }: PayloadAction<{ uuid: string; name: string; isWeight: boolean; type: string }>
@@ -45,20 +47,17 @@ export const createWorkoutSlice = createSlice({
         //         state.dataExercisesList[indexExercise] = payload
         //     }
         // },
-        setWorkoutToCreate: (
-            state,
-            { payload }: PayloadAction<{ id: string; key: keyof IWorkoutExercise; value: number }>
-        ) => {
-            const exercise = state.workout.exercises.find(exc => exc.exercise_uuid === payload.id)
+        setWorkoutToCreate: (state, { payload }: PayloadAction<{ id: string; key: keyof Exercises.Types.WorkoutExercise; value: number }>) => {
+            const exercise = state.workout.exercises.find(exercise => exercise.exercise_uuid === payload.id)
             if (exercise)
-                state.workout.exercises = state.workout.exercises.map(exc =>
-                    exc.exercise_uuid === payload.id ? { ...exc, [payload.key]: payload.value } : exc
+                state.workout.exercises = state.workout.exercises.map(exercise =>
+                    exercise.exercise_uuid === payload.id ? { ...exercise, [payload.key]: payload.value } : exercise
                 )
         },
-        setIntensity: (state, { payload }: PayloadAction<INewWorkout['intensity']>) => {
+        setIntensity: (state, { payload }: PayloadAction<Workouts.Types.Workout['intensity']>) => {
             state.workout.intensity = payload
         },
-        setType: (state, { payload }: PayloadAction<INewWorkout['type']>) => {
+        setType: (state, { payload }: PayloadAction<Workouts.Types.Workout['type']>) => {
             state.workout.type = payload
         },
         setIsLoading: (state, { payload }: PayloadAction<boolean>) => {
@@ -67,15 +66,11 @@ export const createWorkoutSlice = createSlice({
         submitForm: state => {
             state.workout.exercises = []
         },
-        addExerciseToWorkout: (state, { payload }: PayloadAction<IWorkoutExercise>) => {
+        addExerciseToWorkout: (state, { payload }: PayloadAction<Exercises.Types.WorkoutExercise>) => {
             state.workout.exercises.push(payload)
         },
-        delExerciseFromWorkout: (state, { payload }: PayloadAction<string>) => {
-            state.workout.exercises = state.formList.filter(workout => workout.exercise_uuid !== payload)
-        },
-        deleteAllFormList: state => {
-            state.formList = []
-        },
+
+
         setDate: (state, { payload }: PayloadAction<ICreateWorkoutInitialState['dateCreateWorkout']>) => {
             state.dateCreateWorkout = payload
             state.workout.date = payload
@@ -153,14 +148,13 @@ export const {
     setWorkoutToCreate,
     submitForm,
     addExerciseToWorkout,
-    delExerciseFromWorkout,
-    deleteAllFormList,
     setDate,
     deleteDate,
     setIntensity,
     setType,
     setIsLoading,
     toggleModal,
+    delExerciseFromWorkout
 } = createWorkoutSlice.actions
 
 export default createWorkoutSlice.reducer

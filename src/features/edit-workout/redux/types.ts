@@ -1,14 +1,6 @@
-import { IExercisesListItemFromAPI } from '../../create-workout/redux/types'
+import { Exercises } from '../../create-workout/redux/types'
 
-export interface IAddExersice {
-    uuid: string
-    name: string
-    sets: number
-    reps: number
-    weight?: number
-    extraWeight?: number
+export type IAddExersiceWithChecked = Omit<Exercises.Response.Item, 'type'> & {
     checked: boolean
 }
-export type IAddExersiceWithChecked = Omit<IExercisesListItemFromAPI, 'type'> & {
-    checked: boolean
-}
+
